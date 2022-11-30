@@ -286,7 +286,11 @@ static int ambientweather_whx_decode(r_device *decoder, bitbuffer_t *bitbuffer)
                 continue; // DECODE_FAIL_MIC
             }
 
-            id         = (b[2] << 8) | b[3];
+            id         = (b[1] << 16) | (b[2] << 8) | (b[3]);
+
+            char id_str[7];
+            sprintf(id_str, "%06x", id);
+
             battery_ok = (b[4] >> 7);
             channel    = ((b[4] & 0x70) >> 4) + 1;
             rain_raw   = (b[5] << 8) | b[6];
@@ -295,7 +299,7 @@ static int ambientweather_whx_decode(r_device *decoder, bitbuffer_t *bitbuffer)
             /* clang-format off */
             data = data_make(
                     "model",            "",             DATA_STRING, "EcoWitt-WH40",
-                    "id" ,              "",             DATA_INT,    id,
+                    "id" ,              "",             DATA_STRING, id_str,
                     //"channel",          "Channel",      DATA_INT,    channel,
                     //"battery_ok",       "Battery",      DATA_INT,    battery_ok,
                     "rain_mm",          "Total Rain",   DATA_FORMAT, "%.1f mm", DATA_DOUBLE, rain_raw * 0.1,
@@ -320,19 +324,23 @@ static int ambientweather_whx_decode(r_device *decoder, bitbuffer_t *bitbuffer)
                 continue; // DECODE_FAIL_MIC
             }
 
-            id         = (b[2] << 8) | b[3];
+            id         = (b[1] << 16) | (b[2] << 8) | (b[3]);
+
+            char id_str[7];
+            sprintf(id_str, "%06x", id);
+
             int lux    = (b[4] << 8) | b[5];
             int batt   = b[6];
             battery_ok = batt > 0x30; // wild guess
             int wspeed = b[10];
             int wgust  = b[12];
             int wdir   = ((b[7] & 0x20) >> 5) | b[11];
-            sprintf(extra, "%02x %02x%01x", b[13], b[16], b[17] >> 4);
+            sprintf(extra, "%02x %02x %02x", b[13], b[16], b[17]);
 
             /* clang-format off */
             data = data_make(
                     "model",            "",             DATA_STRING, "EcoWitt-WS68",
-                    "id" ,              "",             DATA_INT,    id,
+                    "id",               "",             DATA_STRING, id_str,
                     "battery_raw",      "Battery Raw",  DATA_INT,    batt,
                     "battery_ok",       "Battery",      DATA_INT,    battery_ok,
                     "lux_raw",          "lux",          DATA_INT,    lux,
