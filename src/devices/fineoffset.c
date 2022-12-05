@@ -640,7 +640,7 @@ static int fineoffset_WH51_callback(r_device *decoder, bitbuffer_t *bitbuffer)
     data = data_make(
             "model",            "",                 DATA_STRING, "Fineoffset-WH51",
             "id",               "ID",               DATA_STRING, id,
-            "battery_raw",       "Battery level",    DATA_DOUBLE, battery_level,
+            "battery_raw",      "Battery level",    DATA_INT, battery_level * 100,
             "battery_mV",       "Battery",          DATA_FORMAT, "%d mV", DATA_INT, battery_mv,
             "moisture",         "Moisture",         DATA_FORMAT, "%u %%", DATA_INT, moisture,
             "boost",            "Transmission boost", DATA_INT, boost,
