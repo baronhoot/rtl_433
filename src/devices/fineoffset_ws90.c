@@ -66,7 +66,7 @@ static int fineoffset_ws90_decode(r_device *decoder, bitbuffer_t *bitbuffer)
         return DECODE_ABORT_LENGTH;
     }
 
-    decoder_logf(decoder, 0, __func__, "Found possible data for WS90 with len=%2d", bitbuffer->bits_per_row[0]);
+    decoder_logf(decoder, 1, __func__, "Found possible data for WS90 with len=%2d", bitbuffer->bits_per_row[0]);
 
     // Find a data package and extract data buffer
     unsigned bit_offset = bitbuffer_search(bitbuffer, 0, 0, preamble, 24) + 24;
