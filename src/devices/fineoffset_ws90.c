@@ -70,7 +70,7 @@ static int fineoffset_ws90_decode(r_device *decoder, bitbuffer_t *bitbuffer)
 
     // Find a data package and extract data buffer
     unsigned bit_offset = bitbuffer_search(bitbuffer, 0, 0, preamble, 32) + 32;
-    if (bit_offset + sizeof(b) * 8 > bitbuffer->bits_per_row[0]) { // Did not find a big enough package
+    if (bit_offset + sizeof(buf) * 8 > bitbuffer->bits_per_row[0]) { // Did not find a big enough package
         decoder_logf_bitbuffer(decoder, 2, __func__, bitbuffer, "short package at %u (%u)", bit_offset, bitbuffer->bits_per_row[0]);
         return DECODE_ABORT_LENGTH;
     }
