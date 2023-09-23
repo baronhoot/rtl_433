@@ -112,12 +112,15 @@ static int fineoffset_ws90_decode(r_device *decoder, bitbuffer_t *bitbuffer)
     if (battery_lvl > 100)
         battery_lvl = 100;
 
+    char id_str[7];
+    sprintf(id_str, "%06x", id);
+
     sprintf(extra, "%02x%02x%02x%02x%02x------%02x%02x%02x%02x%02x%02x%02x", buf[14], buf[15], buf[16], buf[17], buf[18], /* buf[19,20] is the rain sensor, buf[21] is supercap_V */ buf[22], buf[23], buf[24], buf[25], buf[26], buf[27], buf[28]);
 
     /* clang-format off */
     data_t *data = data_make(
             "model",            "",                 DATA_STRING, "Fineoffset-WS90",
-            "id",               "ID",               DATA_FORMAT, "%06x", DATA_INT,    id,
+            "id",               "ID",               DATA_STRING, id_str,
             "battery_ok",       "Battery",          DATA_DOUBLE, battery_lvl * 0.01f,
             "battery_mV",       "Battery Voltage",  DATA_FORMAT, "%d mV", DATA_INT,    battery_mv,
             "temperature_C",    "Temperature",      DATA_COND, temp_raw != 0x3ff,   DATA_FORMAT, "%.1f C",   DATA_DOUBLE, temp_c,
